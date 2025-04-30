@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Internal Perusahaan</title>
+    <style>
+        :root {
+            --primary: #0078d4;
+            --primary-dark: #106ebe;
+            --secondary: #2b88d8;
+            --light: #f8f9fa;
+            --dark: #333333;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fa;
+            color: var(--dark);
+        }
+        
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .search-bar {
+            flex: 0 0 40%;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .notifications-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+        
+        .quick-access {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quick-links {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+        
+        .quick-link {
+            flex: 0 0 120px;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f5f7f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quick-link:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+            background-color: rgba(0, 120, 212, 0.1);
+        }
+        
+        .quick-link-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-dark);
+        }
+        
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(0, 120, 212, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .form-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .form-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .form-item:last-child {
+            border-bottom: none;
+        }
+        
+        .form-item:hover {
+            background-color: rgba(0, 120, 212, 0.05);
+        }
+        
+        .form-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .form-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 14px;
+            flex-grow: 1;
+        }
+        
+        .form-link:hover {
+            color: var(--primary);
+        }
+        
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .app-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .app-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+            background-color: rgba(0, 120, 212, 0.05);
+        }
+        
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background-color: #f5f7f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 24px;
+        }
+        
+        .app-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .footer {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            transform: translateX(-250px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+        
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .menu-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(0, 120, 212, 0.05);
+        }
+        
+        .sidebar-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        
+        .tab-container {
+            margin-bottom: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .search-bar {
+                flex: 0 0 100%;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Portal Menu</h3>
+            <button class="menu-button" id="close-sidebar">×</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <span class="sidebar-icon">📊</span>
+                <span>Dashboard</span>
+            </li>
+            <li class="sidebar-item">
+                <span class="sidebar-icon">💻</span>
+                <span>Divisi IT</span>
+            </li>
+            <li class="sidebar-item">
+                <span class="sidebar-icon">👥</span>
+                <span>Divisi HRD & GS</span>
+            </li>
+            <li class="sidebar-item">
+                <span class="sidebar-icon">📱</span>
+                <span>Aplikasi Web</span>
+            </li>
+            <li class="sidebar-item">
+                <span class="sidebar-icon">📝</span>
+                <span>Semua Form</span>
+            </li>
+            <li class="sidebar-item">
+                <span class="sidebar-icon">❓</span>
+                <span>Bantuan</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="menu-button" id="open-sidebar">☰</button>
+            <h1>Portal Internal Perusahaan</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Cari form atau aplikasi...">
+        </div>
+        <div class="profile-area">
+            <div class="notifications">
+                <span>🔔</span>
+                <span class="notifications-dot"></span>
+            </div>
+            <div class="avatar">US</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="welcome-text">
+                <h2>Selamat Datang di Portal Internal</h2>
+                <p>Akses semua form dan aplikasi perusahaan dalam satu tempat</p>
+            </div>
+            <div>
+                <img src="/api/placeholder/300/150" alt="Banner illustration" />
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="quick-access">
+            <h3 class="section-title">
+                <span>⚡</span>
+                <span>Akses Cepat</span>
+            </h3>
+            <div class="quick-links">
+                <div class="quick-link">
+                    <div class="quick-link-icon">📝</div>
+                    <span>Form ITSM</span>
+                </div>
+                <div class="quick-link">
+                    <div class="quick-link-icon">🔒</div>
+                    <span>Hak Akses</span>
+                </div>
+                <div class="quick-link">
+                    <div class="quick-link-icon">👤</div>
+                    <span>HRD Forms</span>
+                </div>
+                <div class="quick-link">
+                    <div class="quick-link-icon">📱</div>
+                    <span>Aplikasi</span>
+                </div>
+                <div class="quick-link">
+                    <div class="quick-link-icon">🏢</div>
+                    <span>Data Center</span>
+                </div>
+                <div class="quick-link">
+                    <div class="quick-link-icon">💼</div>
+                    <span>GS Forms</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Container -->
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="all">Semua</div>
+                <div class="tab" data-tab="it">Divisi IT</div>
+                <div class="tab" data-tab="hrd">Divisi HRD & GS</div>
+                <div class="tab" data-tab="apps">Aplikasi Web</div>
+            </div>
+
+            <!-- All Tab Content -->
+            <div class="tab-content active" id="all-tab">
+                <div class="grid-container">
+                    <!-- IT Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Form Divisi IT</h4>
+                            <div class="card-icon">💻</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">📋</span>
+                                <a href="#" class="form-link">Form ITSM</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🔑</span>
+                                <a href="#" class="form-link">Form Izin Masuk Data Center</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">💾</span>
+                                <a href="#" class="form-link">Form Hak Akses USB</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">👤</span>
+                                <a href="#" class="form-link">Form Permintaan Hak Akses User</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">👨‍💻</span>
+                                <a href="#" class="form-link">Form Permintaan Hak Akses Administrator</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- HRD & GS Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Form Divisi HRD & GS</h4>
+                            <div class="card-icon">👥</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">📝</span>
+                                <a href="#" class="form-link">Form Cuti</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📊</span>
+                                <a href="#" class="form-link">Form Evaluasi Kinerja</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📋</span>
+                                <a href="#" class="form-link">Form Reimbursement</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🏢</span>
+                                <a href="#" class="form-link">Form Peminjaman Ruangan</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🚗</span>
+                                <a href="#" class="form-link">Form Penggunaan Kendaraan</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Web Applications Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Aplikasi Web Perusahaan</h4>
+                            <div class="card-icon">📱</div>
+                        </div>
+                        <div class="app-grid">
+                            <div class="app-item">
+                                <div class="app-icon">📊</div>
+                                <p class="app-name">ERP System</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">💼</div>
+                                <p class="app-name">HRIS</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">📁</div>
+                                <p class="app-name">DMS</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">📧</div>
+                                <p class="app-name">Email Portal</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">🔍</div>
+                                <p class="app-name">Knowledge Base</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">🛒</div>
+                                <p class="app-name">Procurement</p>
+                            </div>
+                            <div class="app-item">
+                                <div class="app-icon">📈</div>
+                                <p class="app-name">BI Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IT Tab Content -->
+            <div class="tab-content" id="it-tab">
+                <h3 class="section-title">
+                    <span>💻</span>
+                    <span>Divisi IT</span>
+                </h3>
+                <div class="grid-container">
+                    <!-- ITSM Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Form ITSM</h4>
+                            <div class="card-icon">📋</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">🔧</span>
+                                <a href="#" class="form-link">Form Service Request</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">⚠️</span>
+                                <a href="#" class="form-link">Form Incident Report</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🔄</span>
+                                <a href="#" class="form-link">Form Change Request</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Data Center Access Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Akses Data Center</h4>
+                            <div class="card-icon">🏢</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">🔑</span>
+                                <a href="#" class="form-link">Form Izin Masuk Ruang Data Center</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📅</span>
+                                <a href="#" class="form-link">Form Jadwal Maintenance Data Center</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Security Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">IT Security</h4>
+                            <div class="card-icon">🔒</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">💾</span>
+                                <a href="#" class="form-link">Form Pembukaan Hak Akses USB</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">👤</span>
+                                <a href="#" class="form-link">Form Permintaan Hak Akses User</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">👨‍💻</span>
+                                <a href="#" class="form-link">Form Permintaan Hak Akses Administrator</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HRD Tab Content -->
+            <div class="tab-content" id="hrd-tab">
+                <h3 class="section-title">
+                    <span>👥</span>
+                    <span>Divisi HRD & GS</span>
+                </h3>
+                <div class="grid-container">
+                    <!-- HR Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Form HRD</h4>
+                            <div class="card-icon">👥</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">📝</span>
+                                <a href="#" class="form-link">Form Cuti</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🏥</span>
+                                <a href="#" class="form-link">Form Klaim Asuransi</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📊</span>
+                                <a href="#" class="form-link">Form Evaluasi Kinerja</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📣</span>
+                                <a href="#" class="form-link">Form Pengajuan Training</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📋</span>
+                                <a href="#" class="form-link">Form Reimbursement</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- GS Forms Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Form General Services</h4>
+                            <div class="card-icon">🏢</div>
+                        </div>
+                        <ul class="form-list">
+                            <li class="form-item">
+                                <span class="form-icon">🏢</span>
+                                <a href="#" class="form-link">Form Peminjaman Ruangan</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🚗</span>
+                                <a href="#" class="form-link">Form Penggunaan Kendaraan</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">📦</span>
+                                <a href="#" class="form-link">Form Permintaan ATK</a>
+                            </li>
+                            <li class="form-item">
+                                <span class="form-icon">🔧</span>
+                                <a href="#" class="form-link">Form Perbaikan Fasilitas</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apps Tab Content -->
+            <div class="tab-content" id="apps-tab">
+                <h3 class="section-title">
+                    <span>📱</span>
+                    <span>Aplikasi Web Perusahaan</span>
+                </h3>
+                <div class="app-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                    <div class="app-item">
+                        <div class="app-icon">📊</div>
+                        <p class="app-name">ERP System</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Sistem Enterprise Resource Planning</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">💼</div>
+                        <p class="app-name">HRIS</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Human Resource Information System</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">📁</div>
+                        <p class="app-name">Document Management</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Sistem Manajemen Dokumen</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">📧</div>
+                        <p class="app-name">Email Portal</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Portal Email Perusahaan</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">🔍</div>
+                        <p class="app-name">Knowledge Base</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Basis Pengetahuan</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">🛒</div>
+                        <p class="app-name">Procurement</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Sistem Pengadaan</p>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon">📈</div>
+                        <p class="app-name">BI Dashboard</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: #666;">Dashboard Business Intelligence</p>
+                    </div>
+                </div
